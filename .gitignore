@@ -52,6 +52,7 @@ test/test_runner
 build/release/*
 build/debug/*
 build/run/*
+build/manual/*
 
 include/*
 lib/*
