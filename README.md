@@ -12,23 +12,23 @@ This project was organized using [cmake-project-template][cpt] as a scaffold.
 
 To simply set up a local build environment:
 
-```
+```bash
 mkdir build && (cd build && cmake .. && make)
 ```
 
 ## Other usages
 
-- building:<br/>
-<kbd>mkdir -p build/manual && (cd build/manual && cmake ../.. && make && make install)</kbd>
+- building:
+`mkdir -p build/manual && (cd build/manual && cmake ../.. && make && make install)`
 
-- (re)building:<br/>
-<kbd>(cd build/manual && make && make install)</kbd>
+- (re)building:
+`(cd build/manual && make && make install)`
 
-- cleaning:<br/>
-<kbd>rm -rf ./{bin,lib,include,build}</kbd>
+- cleaning:
+`rm -rf ./{bin,lib,include,build}`
 
-- serve README.md (requiring [grip][grip]):<br/>
-<kbd>nohup grip README >/dev/null 2>&1 &</kbd>
+- serve README.md (requiring [grip][grip]):
+`nohup grip README >/dev/null 2>&1 &`
 
 ## Todo
 
