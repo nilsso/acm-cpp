@@ -10,13 +10,10 @@ This project was organized using [cmake-project-template][cpt] as a scaffold.
 
 ## Usage
 
-To set up a local build environment:
+To simply set up a local build environment:
 
 ```
-mkdir build
-cd build
-cmake ..
-make
+mkdir build && (cd build && cmake .. && make)
 ```
 
 ## Other usages
