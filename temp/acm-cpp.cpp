@@ -18,6 +18,11 @@ ArithmeticalCongruenceMonoid::operator std::string() const
   return ss.str();
 }
 
+std::vector<int> ArithmeticalCongruenceMonoid::factorizations(int n)
+{
+  return factor(n);
+}
+
 // -----------------------------------------------------------------------------
 // ArithmeticalCongruenceMonoid: Private functions
 // -----------------------------------------------------------------------------

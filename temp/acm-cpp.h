@@ -1,9 +1,9 @@
 #include <cmath>
-#include <utility>
-
+#include <vector>
 #include <string>
-#include <iostream>
 #include <sstream>
+
+#include "util.h"
 
 class ArithmeticalCongruenceMonoid
 {
@@ -12,6 +12,8 @@ public:
 
   int a() const { return m_a; }
   int b() const { return m_b; }
+
+  std::vector<int> factorizations(int n);
 
   explicit operator std::string() const;
 
