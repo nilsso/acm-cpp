@@ -49,10 +49,11 @@ test/test_runner
 
 .idea/workspace.xml
 
-build/release/*
-build/debug/*
-build/run/*
-build/manual/*
+build
+#build/release/*
+#build/debug/*
+#build/run/*
+#build/manual/*
 
 include/*
 lib/*
