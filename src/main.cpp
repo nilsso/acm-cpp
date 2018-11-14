@@ -1,30 +1,20 @@
-#include <division.h>
+#include <iostream>
 
-static const char *const HEADER = "\nDivider © 2018 Monkey Claps Inc.\n\n";
-static const char *const USAGE = "Usage:\n\tdivider <numerator> <denominator>\n\nDescription:\n\tComputes the result of a fractional division,\n\tand reports both the result and the remainder.\n";
+#include "acm/acm.h" // TODO: Non-absolute path (included via CMake)
 
-int main(int argc, const char *argv[]) {
-  Fraction f;
+/// Temporary QOL vector printing
+std::ostream& operator<<(std::ostream& os, std::vector<int> obj)
+{
+  return os << join(obj, ", ");
+}
 
-  std::cout << HEADER;
+int main(int argc, char **argv)
+{
+  using ACM = ArithmeticalCongruenceMonoid;
+  ACM a(1, 4);
 
-  // ensure the correct number of parameters are used.
-  if (argc < 3) {
-    std::cout << USAGE;
-    return 1;
-  }
+  std::cout << a << '\n';
+  std::cout << a.factorizations(144) << '\n';
 
-  f.numerator = atoll(argv[1]);
-  f.denominator = atoll(argv[2]);
-
-  Division d = Division(f);
-  try {
-    DivisionResult r = d.divide();
-
-    std::cout << "Division : " << f.numerator << " / " << f.denominator << " = " << r.division << "\n";
-    std::cout << "Remainder: " << f.numerator << " % " << f.denominator << " = " << r.remainder << "\n";
-  } catch (DivisionByZero) {
-    std::cout << "Can not divide by zero, Homer. Sober up!\n";
-  }
   return 0;
 }

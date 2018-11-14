@@ -1,10 +1,9 @@
 #include <iostream>
 
-#include "acm-cpp.h"
+#include "acm.h"
 
-std::ostream& operator<<(
-    std::ostream& os,
-    std::vector<int> obj)
+/// Temporary QOL vector printing
+std::ostream& operator<<(std::ostream& os, std::vector<int> obj)
 {
   return os << join(obj, ", ");
 }

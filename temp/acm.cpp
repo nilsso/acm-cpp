@@ -1,4 +1,4 @@
-#include "acm-cpp.h"
+#include "acm.h"
 
 ArithmeticalCongruenceMonoid::ArithmeticalCongruenceMonoid(int a, int b)
 {
