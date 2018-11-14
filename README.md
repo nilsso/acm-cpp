@@ -39,6 +39,7 @@ make
 implementation-defined (i.e. CMake defined) filenames. So instead of `#include
 "../util.h"` it should be `#include <util>`. But for now relative stays since
 I'm too lazy to get Vim to figure out where to look as specified by CMake.
+- Fix TravisCI and `run.sh`
 
 [acm-sage]:https://github.com/coneill-math/acm-sage
 [cpt]:https://github.com/kigster/cmake-project-template
