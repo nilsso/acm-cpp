@@ -2,6 +2,8 @@
 
 #include "acm/acm.h" // TODO: Non-absolute path (included via CMake)
 
+using ACM = ArithmeticalCongruenceMonoid;
+
 /// Temporary QOL vector printing
 std::ostream& operator<<(std::ostream& os, std::vector<int> obj)
 {
@@ -10,11 +12,10 @@ std::ostream& operator<<(std::ostream& os, std::vector<int> obj)
 
 int main(int argc, char **argv)
 {
-  using ACM = ArithmeticalCongruenceMonoid;
-  ACM a(1, 4);
+  ACM hilbert(1, 4);
 
-  std::cout << a << '\n';
-  std::cout << a.factorizations(144) << '\n';
+  std::cout << hilbert << '\n';
+  std::cout << hilbert.factorizations(144) << '\n';
 
   return 0;
 }
