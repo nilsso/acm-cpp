@@ -49,6 +49,7 @@ int main(int argc, char **argv)
   //std::cout << a << '\n';
 
   std::cout << join(factor(144), ", ") << '\n';
+  // [output]> 2, 2, 2, 2, 3, 3
 
   return 0;
 }
