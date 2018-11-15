@@ -28,3 +28,6 @@ Changed the `factor` implementation from including multiples of prime factors to
 instead generating a vector of pairs of prime factors and their powers. This
 also necessitated changing the return type of `ACM::factorizatons` and changing
 the QOL printing function in `acm-main.cpp` to work on integer pair vectors.
+
+Replaced all the old unit test sources with ones for `ACM` and `factor`. Only
+the `factor` tests actually do anything as of now.
