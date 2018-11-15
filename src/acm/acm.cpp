@@ -20,7 +20,7 @@ ArithmeticalCongruenceMonoid::operator std::string() const
 
 std::vector<int> ArithmeticalCongruenceMonoid::factorizations(int n)
 {
-  return factor(n);
+  return util::factor(n);
 }
 
 // -----------------------------------------------------------------------------

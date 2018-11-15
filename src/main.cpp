@@ -1,20 +1,20 @@
 #include <iostream>
 #include <getopt.h>
 
-#include "acm/acm.h" // TODO: Non-absolute path (included via CMake)
+#include "util.h"
+#include "acm/acm.h"
 
 using ACM = ArithmeticalCongruenceMonoid;
 
 /// Temporary QOL vector printing
 std::ostream& operator<<(std::ostream& os, std::vector<int> obj)
 {
-  return os << join(obj, ", ");
+  return os << util::join(obj, ", ");
 }
 
 int main(int argc, char **argv)
 {
   int a, b;
-  ACM *acm;
 
   for (char c; (c = getopt(argc, argv, "hHa:b:")) != -1;) {
     switch (c) {
@@ -42,10 +42,10 @@ int main(int argc, char **argv)
     }
   }
 
-  assert(a && b);
-  acm = new ACM(a, b);
+  assert(a && b && b > a);
+  ACM acm{a, b};
 
   int n = std::stoi(argv[optind]);
-  std::cout << acm->factorizations(n) << '\n';
+  std::cout << acm.factorizations(n) << '\n';
   return 0;
 }
