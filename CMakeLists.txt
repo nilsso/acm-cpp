@@ -10,10 +10,11 @@ set(ACM_MAIN_INSTALL_BIN_DIR ${PROJECT_SOURCE_DIR}/bin)
 set(ACM_MAIN_INSTALL_LIB_DIR ${PROJECT_SOURCE_DIR}/lib)
 
 set(ACM_HEADERS_DIR ${PROJECT_SOURCE_DIR}/src/acm)
+set(HEADERS_DIR ${PROJECT_SOURCE_DIR}/src)
 
 include_directories(${ACM_MAIN_INSTALL_INCLUDE_DIR})
 include_directories(${ACM_HEADERS_DIR})
 
 add_subdirectory(src)
-#add_subdirectory(test)
+add_subdirectory(test)
 

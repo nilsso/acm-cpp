@@ -1,4 +1,7 @@
 #include <iostream>
+#include <utility>
+#include <vector>
+#include <sstream>
 #include <getopt.h>
 
 #include "util.h"
@@ -6,12 +9,22 @@
 
 using ACM = ArithmeticalCongruenceMonoid;
 
-/// Temporary QOL vector printing
-std::ostream& operator<<(std::ostream& os, std::vector<int> obj)
+/// Temporary QOL printing functions
+std::ostream& operator<<(std::ostream& os, std::vector<std::pair<int,int>> obj)
 {
-  return os << util::join(obj, ", ");
+  std::stringstream ss;
+  std::vector<std::string> strings;
+  for (auto p: obj) {
+    ss.str("");
+    ss << '(' << p.first << ',' << p.second << ')';
+    strings.push_back(ss.str());
+  }
+  return os << util::join(strings, ", ");
 }
 
+// -----------------------------------------------------------------------------
+// acm-main Entry point
+// -----------------------------------------------------------------------------
 int main(int argc, char **argv)
 {
   int a, b;
