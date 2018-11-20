@@ -4,23 +4,17 @@
 #include <sstream>
 #include <getopt.h>
 
-#include "util.h"
 #include "acm/acm.h"
+#include "util.h"
+
+#include "divisors.h"
+
+using std::string;
+using std::vector;
+using std::pair;
+using std::cout;
 
 using ACM = ArithmeticalCongruenceMonoid;
-
-/// Temporary QOL printing functions
-std::ostream& operator<<(std::ostream& os, std::vector<std::pair<int,int>> obj)
-{
-  std::stringstream ss;
-  std::vector<std::string> strings;
-  for (auto p: obj) {
-    ss.str("");
-    ss << '(' << p.first << ',' << p.second << ')';
-    strings.push_back(ss.str());
-  }
-  return os << util::join(strings, ", ");
-}
 
 // -----------------------------------------------------------------------------
 // acm-main Entry point
@@ -55,10 +49,29 @@ int main(int argc, char **argv)
     }
   }
 
-  assert(a && b && b > a);
-  ACM acm{a, b};
-
   int n = std::stoi(argv[optind]);
-  std::cout << acm.factorizations(n) << '\n';
+
+  cout
+    << "n=" << n << '\n'
+    << "divisors=" << divisors(n) << '\n'
+    << "pfactor=" << pfactor(n) << '\n'
+    ;
+
+  ACM acm{a, b};
+  auto divisors = acm.divisors(n);
+  auto factorizations = acm.factorizations(n);
+
+  cout
+    << "acm=" << acm << '\n'
+    << "acm.divisors=" << divisors << '\n'
+    << "acm.factorizations=" << factorizations << '\n'
+    ;
+
+  pair<int,int> ab{a,b};
+  ACM{a,b}.divisors(1);
+  ACM{ab}.divisors(1);
+
+  cout << "next elements: " << acm.elements(n, 3) << '\n';
+
   return 0;
 }

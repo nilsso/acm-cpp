@@ -1,4 +1,4 @@
-**11/13/2018**
+#### 11/13/2018
 
 Finished the project structure setup as borrowed [cmake-project-template][cpt].
 Still need to adapt the unit tests and `run.sh` script though.
@@ -19,7 +19,7 @@ used as a terminal interface into testing the `acm` library functionality.
 
 [cpt]:https://github.com/kigster/cmake-project-template<Paste>
 
-**11/14/2018**
+#### 11/14/2018
 
 Made `util` its own name-space and un-templated the functions there and fixed
 the types to integers (since we only care about integers anyways).
@@ -31,3 +31,16 @@ the QOL printing function in `acm-main.cpp` to work on integer pair vectors.
 
 Replaced all the old unit test sources with ones for `ACM` and `factor`. Only
 the `factor` tests actually do anything as of now.
+
+#### 11/15/2018
+
+Added a function `integerDivisors` to `util` and changed `factor` to `pfactor`
+(since it returns a vector of pairs of the *prime* divisors and their powers of
+some number n).
+
+Implemented more tests.
+
+### 11/16/2018
+
+To get `lldb` working had to unlink the `python@2` package (`brew unlink
+python@2`). Remember to re-link it.

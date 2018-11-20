@@ -6,6 +6,8 @@ set(SOURCE_FILES
     acm.cpp
 )
 
+include_directories(${HEADERS_DIR})
+
 add_library(acm SHARED STATIC ${SOURCE_FILES})
 
 install(TARGETS acm DESTINATION ${ACM_MAIN_INSTALL_LIB_DIR})

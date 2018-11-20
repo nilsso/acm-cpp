@@ -1,27 +1,39 @@
 #include <vector>
 #include <utility>
-#include <iostream>
-#include <util.h>
+
 #include <gtest/gtest.h>
+#include <util.h>
+#include <pfactor.h>
 
-class FactorTest : public ::testing::Test {};
+using std::vector;
+using std::pair;
 
-inline void verify(int n, std::vector<std::pair<int,int>> factors) {
-  EXPECT_EQ(util::factor(n), factors) << "  where n is " << n;
+class FactorTest : public::testing::Test {};
+
+inline void test_pfactor(int n, vector<pair<int,int>> pfactors)
+{
+  EXPECT_EQ(pfactor(n), pfactors) << "  where n is " << n;
 }
 
 // Primes
-
-TEST_F(FactorTest, 2) {
-  verify(2, {{2,1}});
+TEST_F(FactorTest, PFactors_2) {
+  test_pfactor(2, { {2,1} });
 }
-
-TEST_F(FactorTest, 5) {
-  verify(5, {{5,1}});
+TEST_F(FactorTest, PFactors_5) {
+  test_pfactor(5, { {5,1} });
 }
 
 // Factorables
-
-TEST_F(FactorTest, 4) {
-  verify(4, {{2,2}});
+TEST_F(FactorTest, PFactors_4) {
+  test_pfactor(4, { {2,2} });
 }
+TEST_F(FactorTest, PFactors_12) {
+  test_pfactor(12, { {2,2}, {3,1} });
+}
+TEST_F(FactorTest, PFactors_60) {
+  test_pfactor(60, { {2,2}, {3,1}, {5, 1} });
+}
+TEST_F(FactorTest, PFactors_420) {
+  test_pfactor(420, { {2,2}, {3,1}, {5, 1}, {7, 1} } );
+}
+

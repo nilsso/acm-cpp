@@ -2,55 +2,105 @@
 
 #include <cmath>
 #include <vector>
+#include <set>
 #include <utility>
 #include <string>
 #include <sstream>
 #include <iostream>
+#include <type_traits>
 
-namespace util
+using std::vector;
+using std::set;
+using std::pair;
+using std::string;
+using std::stringstream;
+using std::ostream;
+
+using std::to_string;
+
+ostream& operator<<(ostream& os, pair<int,int> obj);
+ostream& operator<<(ostream& os, vector<int> obj);
+ostream& operator<<(ostream& os, vector<vector<int>> obj);
+ostream& operator<<(ostream& os, vector<pair<int,int>> obj);
+
+namespace is_stl_container_impl
 {
-  /**
-   * @param obj Vector of strings to join
-   * @param delim String delimiter
-   */
-  inline std::string join(const std::vector<std::string>& obj, const std::string& delim)
-  {
-    std::stringstream ss;
-    for (auto i = obj.begin(); i != std::prev(obj.end()); ++i)
-      ss << *i << delim;
-    ss << obj.back();
-    return ss.str();
-  }
+  template <typename T> struct is_stl_container:std::false_type{};
+  template <typename T, std::size_t N> struct is_stl_container<std::array<T,N>>    :std::true_type{};
+  template <typename... Args> struct is_stl_container<std::vector<Args...>>:std::true_type{};
+}
 
-  /**
-   * @tparam T Numeric type
-   * @param n Number to factor
-   * @return Vector of pairs of factors and their powers
-   *
-   * For example factor(441) will return [(3, 2), (7, 2)] equivalently.
-   */
-  inline std::vector<std::pair<int,int>> factor(int n)
-  {
-    std::vector<std::pair<int,int>> factors;
-    int d = 2;
-    int m = (int)std::sqrt(n);
-    while (n > 1) {
-      while (n % d != 0) {
-        ++d;
-      }
-      if (n % d == 0) {
-        int dd = n/d;
-        int i = 1;
-        while (dd % d == 0) {
-          dd /= d;
-          ++i;
-        }
-        factors.push_back({d, i});
-        n /= pow(d,i);
-      }
-      if (d == m)
-        d = n;
+template <typename T> struct is_container {
+  static constexpr bool const value = is_stl_container_impl::is_stl_container<std::decay_t<T>>::value;
+};
+
+template
+<template<typename ...> class Tc, typename T>
+inline string join(
+    const Tc<T> &c,
+    const string &delim,
+    const string &lcap="(",
+    const string &rcap=")")
+{
+  stringstream ss;
+  ss << lcap;
+  if (c.size() > 0) {
+    auto end = prev(c.end());
+    for (auto i = c.begin(); i != end; ++i) {
+      ss << (*i) << delim;
     }
-    return factors;
+    ss << *prev(c.end());
   }
+  ss << rcap;
+  return ss.str();
+};
+
+template
+  <template<typename ...> class Tc, template<typename ...> class Dc, typename T>
+inline string join(
+    const Dc<Tc<T>> &c,
+    const string &delim,
+    typename std::enable_if<is_container<Tc<T>>::value>::type* = 0,
+    typename std::enable_if<is_container<Dc<T>>::value>::type* = 0)
+{
+  vector<string> s;
+  std::for_each(c.begin(), c.end(),
+      [&delim,&s](const Tc<T> &i){ s.push_back(join(i, delim)); });
+  return join(s, delim);
+};
+
+
+/// Temporary QOL printing functions
+
+template<typename T>
+inline string to_string(pair<T,T> obj)
+{
+  stringstream ss;
+  ss << "(" << obj.first << "," << obj.second << ")";
+  return ss.str();
+}
+
+inline ostream& operator<<(ostream& os, pair<int,int> obj)
+{
+  return os << to_string(obj);
+}
+
+inline ostream& operator<<(ostream& os, set<int> obj)
+{
+  return os << join(obj, ",");
+}
+
+inline ostream& operator<<(ostream& os, vector<int> obj)
+{
+  return os << join(obj, ",");
+}
+
+inline ostream& operator<<(ostream& os, vector<vector<int>> obj)
+{
+  return os << join(obj, ",");
+}
+
+inline ostream& operator<<(ostream& os, vector<pair<int,int>> obj)
+{
+  return os << join(obj, ",");
 }
