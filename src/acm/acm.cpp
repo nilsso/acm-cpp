@@ -86,23 +86,21 @@ ArithmeticalCongruenceMonoid::ACMFactor(int n)
     fs.push_back({n});
     return fs;
   }
-  for (auto di = next(ds.begin()); di != ds.end(); ++di) {
+  for (auto di = next(ds.begin()); di != prev(ds.end()); ++di) {
     int d = *di;
-    if (d == n && fs.size() != 0) {
+    int dd = n/d;
+    if (d <= dd) {
       break;
     }
-    int dd = n/(*di);
-    if (d <= dd) {
-      auto dfs = ACMFactor(d);
-      auto ddfs = ACMFactor(dd);
-      for (auto df: dfs) {
-        for (auto ddf: ddfs) {
-          vector<int> nf;
-          nf.reserve(df.size()+ddf.size());
-          nf.insert(nf.end(), df.begin(), df.end());
-          nf.insert(nf.end(), ddf.begin(), ddf.end());
-          fs.emplace_back(std::move(nf));
-        }
+    auto dfs = ACMFactor(d);
+    auto ddfs = ACMFactor(dd);
+    for (auto df: dfs) {
+      for (auto ddf: ddfs) {
+        vector<int> nf;
+        nf.reserve(df.size()+ddf.size());
+        nf.insert(nf.end(), df.begin(), df.end());
+        nf.insert(nf.end(), ddf.begin(), ddf.end());
+        fs.emplace_back(std::move(nf));
       }
     }
   }
