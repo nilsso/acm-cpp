@@ -8,6 +8,7 @@
 #include <string>
 #include <sstream>
 #include <exception>
+#include <algorithm>
 
 #include "../util.h"
 #include "../pfactor.h"

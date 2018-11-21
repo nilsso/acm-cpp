@@ -81,22 +81,17 @@ ArithmeticalCongruenceMonoid::ACMFactor(int n)
     return fs;
   }
   auto ds = divisors(n);
+  set<int> checked;
   // If divisors only 1 and n
   if (ds.size()==2) {
     fs.push_back({n});
     return fs;
   }
-  auto s = std::next(ds.begin(), 2);
-  auto e = std::next(ds.begin(), 1+((ds.size()-2)/2));
-  cout
-    << "ds=" << ds << '\n'
-    << "s=" << *s << '\n'
-    << "e=" << *e << '\n'
-    ;
-  for (; s != e; ++s) {
-    int d = *s;
+  auto di = next(ds.begin());
+  auto end = ds.end();
+  for (; di != end && checked.count(*di)==0; ++di) {
+    int d = *di;
     int dd = n/d;
-    cout << n << '/' << d << '=' << dd << '\n';
     auto dfs = ACMFactor(d);
     auto ddfs = ACMFactor(dd);
     for (auto df: dfs) {
@@ -106,8 +101,14 @@ ArithmeticalCongruenceMonoid::ACMFactor(int n)
         nf.insert(nf.end(), df.begin(), df.end());
         nf.insert(nf.end(), ddf.begin(), ddf.end());
         fs.emplace_back(std::move(nf));
+        std::for_each(df.begin(), df.end(),
+            [&checked](int a){ checked.insert(a); });
+        std::for_each(ddf.begin(), ddf.end(),
+            [&checked](int a){ checked.insert(a); });
       }
     }
+    checked.insert(d);
+    checked.insert(dd);
   }
   return fs;
 }

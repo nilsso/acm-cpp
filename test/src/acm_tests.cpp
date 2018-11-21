@@ -76,6 +76,9 @@ TEST(ACMTest, HilbertFactorizations45) {
 TEST(ACMTest, HilbertFactorizations441) {
   test_factorizations({1,4}, 441, {{9, 49}, {21, 21}});
 }
-TEST(ACMTest, HilbertFactorizations441) {
-  test_factorizations({1,4}, 441, {{9, 49}, {21, 21}});
+TEST(ACMTest, HilbertFactorizations117645) {
+  test_factorizations({1,4}, 117645, {{5, 33, 713}, {5, 69, 341}, {5, 93, 253}});
+}
+TEST(ACMTest, HilbertFactorizations5764797) {
+  test_factorizations({1,4}, 5764797, {{9, 89, 7197}});
 }
