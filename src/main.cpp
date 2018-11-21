@@ -16,14 +16,27 @@ using std::cout;
 
 using ACM = ArithmeticalCongruenceMonoid;
 
-// -----------------------------------------------------------------------------
-// acm-main Entry point
+//*  ---------------------------------------------------------------------------
+// ACM test program
+//
+// Mandatory arguments:
+//   -H : Hilbert ACM
+//   -a : a component of ACM (required if not -H)
+//   -b : b component of ACM (required if not -H)
+//
+// Optional arguments:
+//   -A : All ACM functions of argument n
+//   -d : ACM divisors of argument n
+//   -f : ACM factorizations of argument n
+//   -i : ACM irreducibility of argument n
+//   -n : ACM irreducible elements up to argument n
 // -----------------------------------------------------------------------------
 int main(int argc, char **argv)
 {
-  int a, b;
+  int a, b, n;
+  char o;
 
-  for (char c; (c = getopt(argc, argv, "hHa:b:")) != -1;) {
+  for (char c; (c = getopt(argc, argv, "hHa:b:A:d:f:i:n:")) != -1;) {
     switch (c) {
       case 'h':
         std::cout << "Help!\n";
@@ -42,6 +55,15 @@ int main(int argc, char **argv)
         b = std::stoi(optarg);
         break;
 
+      case 'A':
+      case 'd':
+      case 'f':
+      case 'i':
+      case 'n':
+        n = std::stoi(optarg);
+        o = c;
+        break;
+
       default:
         std::cout
           << "Error!\n";
@@ -49,29 +71,34 @@ int main(int argc, char **argv)
     }
   }
 
-  int n = std::stoi(argv[optind]);
-
-  cout
-    << "n=" << n << '\n'
-    << "divisors=" << divisors(n) << '\n'
-    << "pfactor=" << pfactor(n) << '\n'
-    ;
+  if (!((bool)a && (bool)b)) {
+    std::cout
+      << "Error!\n";
+    return 1;
+  }
 
   ACM acm{a, b};
-  auto divisors = acm.divisors(n);
-  auto factorizations = acm.factorizations(n);
 
-  cout
-    << "acm=" << acm << '\n'
-    << "acm.divisors=" << divisors << '\n'
-    << "acm.factorizations=" << factorizations << '\n'
-    ;
-
-  pair<int,int> ab{a,b};
-  ACM{a,b}.divisors(1);
-  ACM{ab}.divisors(1);
-
-  cout << "next elements: " << acm.elements(n, 3) << '\n';
-
+  switch (o) {
+    case 'A':
+      cout
+        << acm.divisors(n) << '\n'
+        << acm.factorizations(n) << '\n'
+        << acm.irreducible(n) << '\n'
+        << acm.irreducibles_up_to(n) << '\n';
+      break;
+    case 'd':
+      cout << acm.divisors(n) << '\n';
+      break;
+    case 'f':
+      cout << acm.factorizations(n) << '\n';
+      break;
+    case 'i':
+      cout << acm.irreducible(n) << '\n';
+      break;
+    case 'n':
+      cout << acm.irreducibles_up_to(n) << '\n';
+      break;
+  }
   return 0;
 }

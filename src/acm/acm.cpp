@@ -5,7 +5,7 @@
 // -----------------------------------------------------------------------------
 
 ArithmeticalCongruenceMonoid::ArithmeticalCongruenceMonoid(int a, int b):
-  m_factorizations{std::make_pair(1, vector<vector<int>>{})},
+  m_factorizations{std::make_pair(1, set<vector<int>>{})},
   m_irreducible{std::make_pair(1, true)}
 {
   if(a % b != (int)std::pow(a, 2) % b)
@@ -46,7 +46,7 @@ ArithmeticalCongruenceMonoid::divisors(int n)
   return ds;
 }
 
-const vector<vector<int>>&
+const set<vector<int>>&
 ArithmeticalCongruenceMonoid::factorizations(int n)
 {
   if (m_factorizations.count(n))
@@ -56,74 +56,73 @@ ArithmeticalCongruenceMonoid::factorizations(int n)
 
 bool ArithmeticalCongruenceMonoid::irreducible(int n)
 {
+  // If value cached
   if (m_irreducible.count(n))
     return m_irreducible.at(n);
-  // ...
-  m_irreducible.insert(std::make_pair(n, true)); // TODO
-  return m_irreducible.at(n);
+
+  const auto& fs = ACMFactor(n);
+  bool irreducible = fs.size()==0 || (*fs.begin()).size()==1;
+  m_irreducible.insert(std::make_pair(n, irreducible));
+  return irreducible;
 }
 
 // -----------------------------------------------------------------------------
 // ArithmeticalCongruenceMonoid: Private instance functions
 // -----------------------------------------------------------------------------
 
-const vector<vector<int>>&
+const set<vector<int>>&
 ArithmeticalCongruenceMonoid::ACMFactor(int n)
 {
-  set<int> checked;
-  return __ACMFactor(n, checked);
-}
-
-const vector<vector<int>>&
-ArithmeticalCongruenceMonoid::__ACMFactor(int n, set<int> &checked)
-{
-  if (m_factorizations.count(n)) {
+  // If value cached
+  if (m_factorizations.count(n))
     return m_factorizations.at(n);
-  }
-  // Initialize empty list of factorizations for n and get the reference
-  m_factorizations.insert(std::make_pair(n, vector<vector<int>>{}));
-  vector<vector<int>> &fs = m_factorizations.at(n);
+
+  // Initialize empty list of n factorizations and get reference
+  m_factorizations.insert(std::make_pair(n, set<vector<int>>{}));
+  set<vector<int>> &fs = m_factorizations.at(n);
+
   // If n not ACM element
-  if (!in(n)) {
+  if (!in(n))
     return fs;
-  }
+
   auto ds = divisors(n);
-  // If divisors only 1 and n
+  // If n irreducible (divisors only 1 and n)
   if (ds.size()==2) {
-    fs.push_back({n});
+    fs.insert({n});
     return fs;
   }
-  // Start at front+1, end at halfway+1
+
+  // Build list, skipping divisor ends (1 and n)
   auto di = next(ds.begin());
-  auto end = next(ds.begin(), ds.size()/2+1);
-  int d = *di;
-  int dd = n/d;
-  for (; di != end; ++di) {
-    d = *di;
-    dd = n/d;
-    // Skip if d or n/d already factorized
-    if (checked.count(d) || checked.count(dd)) {
-      continue;
-    }
-    auto dfs = __ACMFactor(d, checked);
-    auto ddfs = __ACMFactor(dd, checked);
-    for (auto df: dfs) {
-      for (auto ddf: ddfs) {
-        vector<int> nf;
-        nf.reserve(df.size()+ddf.size());
-        nf.insert(nf.end(), df.begin(), df.end());
-        nf.insert(nf.end(), ddf.begin(), ddf.end());
-        fs.emplace_back(std::move(nf));
-        std::for_each(df.begin(), df.end(),
-            [&checked](int dc){ checked.insert(dc); });
-        std::for_each(ddf.begin(), ddf.end(),
-            [&checked](int dc){ checked.insert(dc); });
+  auto de = prev(ds.end(), 1);
+  for (; di != de; ++di) {
+    int d = *di;
+    int dd = n/d;
+    const auto &dfs = ACMFactor(d); // Divisor d factors
+    // If divisor d reducible
+    if (dfs.size() && (*dfs.begin()).size()==1) {
+      const auto &ddfs = ACMFactor(dd); // Divisor n/d (dd) factors
+      for (const auto &ddf: ddfs) {
+        if (ddf.size()==0 || d >= *prev(ddf.end())) {
+          vector<int> nf{ddf};
+          nf.push_back(d);
+          fs.insert(std::move(nf));
+        }
       }
     }
-    checked.insert(d);
-    checked.insert(dd);
   }
   return fs;
+}
+
+vector<int>
+ArithmeticalCongruenceMonoid::irreducibles_up_to(int lim)
+{
+  vector<int> irreducibles;
+  for (int n = m_a; n <= lim; n += m_b) {
+    if (irreducible(n))
+      irreducibles.push_back(n);
+  }
+  return irreducibles;
 }
 
 // -----------------------------------------------------------------------------

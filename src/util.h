@@ -20,7 +20,8 @@ using std::to_string;
 
 ostream& operator<<(ostream& os, pair<int,int> obj);
 ostream& operator<<(ostream& os, vector<int> obj);
-ostream& operator<<(ostream& os, vector<vector<int>> obj);
+ostream& operator<<(ostream& os, set<int> obj);
+ostream& operator<<(ostream& os, set<vector<int>> obj);
 ostream& operator<<(ostream& os, vector<pair<int,int>> obj);
 
 namespace is_stl_container_impl
@@ -85,17 +86,17 @@ inline ostream& operator<<(ostream& os, pair<int,int> obj)
   return os << to_string(obj);
 }
 
-inline ostream& operator<<(ostream& os, set<int> obj)
-{
-  return os << join(obj, ",");
-}
-
 inline ostream& operator<<(ostream& os, vector<int> obj)
 {
   return os << join(obj, ",");
 }
 
-inline ostream& operator<<(ostream& os, vector<vector<int>> obj)
+inline ostream& operator<<(ostream& os, set<int> obj)
+{
+  return os << join(obj, ",");
+}
+
+inline ostream& operator<<(ostream& os, set<vector<int>> obj)
 {
   return os << join(obj, ",");
 }
