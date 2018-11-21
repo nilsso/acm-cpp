@@ -86,12 +86,17 @@ ArithmeticalCongruenceMonoid::ACMFactor(int n)
     fs.push_back({n});
     return fs;
   }
-  for (auto di = next(ds.begin()); di != prev(ds.end()); ++di) {
-    int d = *di;
+  auto s = std::next(ds.begin(), 2);
+  auto e = std::next(ds.begin(), 1+((ds.size()-2)/2));
+  cout
+    << "ds=" << ds << '\n'
+    << "s=" << *s << '\n'
+    << "e=" << *e << '\n'
+    ;
+  for (; s != e; ++s) {
+    int d = *s;
     int dd = n/d;
-    if (d <= dd) {
-      break;
-    }
+    cout << n << '/' << d << '=' << dd << '\n';
     auto dfs = ACMFactor(d);
     auto ddfs = ACMFactor(dd);
     for (auto df: dfs) {
