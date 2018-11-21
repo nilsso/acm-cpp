@@ -40,7 +40,16 @@ some number n).
 
 Implemented more tests.
 
-### 11/16/2018
+#### 11/16/2018
 
 To get `lldb` working had to unlink the `python@2` package (`brew unlink
 python@2`). Remember to re-link it.
+
+#### 11/21/2018
+
+Took a while to implement `factorizations` and went through multiple iterations
+to get working. But now it works, and for multiple unit-tests. Finished
+implementing `irreducible` and `irreducibles_up_to` as well. Changed the test
+program to accept a optional operation argument and output the ACM result of the
+operation.
+
