@@ -82,3 +82,8 @@ TEST(ACMTest, HilbertFactorizations117645) {
 TEST(ACMTest, HilbertFactorizations5764797) {
   test_factorizations({1,4}, 5764797, {{9, 89, 7197}});
 }
+TEST(ACMTest, HilbertFactorizations10594881) {
+  test_factorizations({1, 4},
+      10594881,
+      {{9, 33, 141, 253}, {9, 69, 121, 141}, {33, 33, 69, 141}, {9, 33, 69, 517}, {9, 9, 253, 517}, {9, 33, 33, 1081}, {9, 9, 121, 1081}});
+}

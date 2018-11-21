@@ -93,7 +93,11 @@ private:
 
   ArithmeticalCongruenceMonoid() = delete;
 
+  //! ACMFactor
   const vector<vector<int>>& ACMFactor(int n);
+
+  //! ACMFactor helper
+  const vector<vector<int>>& __ACMFactor(int n, set<int> &checked);
 };
 
 //! Stream insertion overload

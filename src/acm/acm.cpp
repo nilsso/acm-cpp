@@ -70,6 +70,13 @@ bool ArithmeticalCongruenceMonoid::irreducible(int n)
 const vector<vector<int>>&
 ArithmeticalCongruenceMonoid::ACMFactor(int n)
 {
+  set<int> checked;
+  return __ACMFactor(n, checked);
+}
+
+const vector<vector<int>>&
+ArithmeticalCongruenceMonoid::__ACMFactor(int n, set<int> &checked)
+{
   if (m_factorizations.count(n)) {
     return m_factorizations.at(n);
   }
@@ -81,19 +88,25 @@ ArithmeticalCongruenceMonoid::ACMFactor(int n)
     return fs;
   }
   auto ds = divisors(n);
-  set<int> checked;
   // If divisors only 1 and n
   if (ds.size()==2) {
     fs.push_back({n});
     return fs;
   }
+  // Start at front+1, end at halfway+1
   auto di = next(ds.begin());
-  auto end = ds.end();
-  for (; di != end && checked.count(*di)==0; ++di) {
-    int d = *di;
-    int dd = n/d;
-    auto dfs = ACMFactor(d);
-    auto ddfs = ACMFactor(dd);
+  auto end = next(ds.begin(), ds.size()/2+1);
+  int d = *di;
+  int dd = n/d;
+  for (; di != end; ++di) {
+    d = *di;
+    dd = n/d;
+    // Skip if d or n/d already factorized
+    if (checked.count(d) || checked.count(dd)) {
+      continue;
+    }
+    auto dfs = __ACMFactor(d, checked);
+    auto ddfs = __ACMFactor(dd, checked);
     for (auto df: dfs) {
       for (auto ddf: ddfs) {
         vector<int> nf;
@@ -102,9 +115,9 @@ ArithmeticalCongruenceMonoid::ACMFactor(int n)
         nf.insert(nf.end(), ddf.begin(), ddf.end());
         fs.emplace_back(std::move(nf));
         std::for_each(df.begin(), df.end(),
-            [&checked](int a){ checked.insert(a); });
+            [&checked](int dc){ checked.insert(dc); });
         std::for_each(ddf.begin(), ddf.end(),
-            [&checked](int a){ checked.insert(a); });
+            [&checked](int dc){ checked.insert(dc); });
       }
     }
     checked.insert(d);
