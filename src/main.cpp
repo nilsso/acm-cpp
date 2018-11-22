@@ -33,10 +33,10 @@ using ACM = ArithmeticalCongruenceMonoid;
 // -----------------------------------------------------------------------------
 int main(int argc, char **argv)
 {
-  int a, b, n;
+  int a, b, n, s;
   char o;
 
-  for (char c; (c = getopt(argc, argv, "hHa:b:A:d:f:i:n:")) != -1;) {
+  for (char c; (c = getopt(argc, argv, "hHa:b:Adfin")) != -1;) {
     switch (c) {
       case 'h':
         std::cout << "Help!\n";
@@ -60,7 +60,6 @@ int main(int argc, char **argv)
       case 'f':
       case 'i':
       case 'n':
-        n = std::stoi(optarg);
         o = c;
         break;
 
@@ -70,6 +69,8 @@ int main(int argc, char **argv)
         return 1;
     }
   }
+
+  n = std::stoi(argv[optind]);
 
   if (!((bool)a && (bool)b)) {
     std::cout

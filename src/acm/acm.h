@@ -85,6 +85,9 @@ public:
   //! Irreducibles up to limit
   vector<int> irreducibles_up_to(int lim);
 
+  //! Irreducibles up to limit
+  vector<int> irreducibles_up_to(int s, int lim);
+
   //! User defined ACM to string
   explicit operator std::string() const
   { return "M("+to_string(m_a)+","+to_string(m_b)+")"; }

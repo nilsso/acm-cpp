@@ -120,8 +120,14 @@ ArithmeticalCongruenceMonoid::ACMFactor(int n)
 vector<int>
 ArithmeticalCongruenceMonoid::irreducibles_up_to(int lim)
 {
+  return irreducibles_up_to(m_a, lim);
+}
+
+vector<int>
+ArithmeticalCongruenceMonoid::irreducibles_up_to(int s, int lim)
+{
   vector<int> irreducibles;
-  for (int n = m_a; n <= lim; n += m_b) {
+  for (int n = s-(s-m_a)%m_b; n <= lim; n += m_b) {
     if (irreducible(n))
       irreducibles.push_back(n);
   }
