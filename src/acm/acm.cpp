@@ -6,7 +6,10 @@
 
 ArithmeticalCongruenceMonoid::ArithmeticalCongruenceMonoid(int a, int b):
   m_factorizations{std::make_pair(1, set<vector<int>>{})},
-  m_irreducible{std::make_pair(1, true)}
+  m_irreducible{
+    std::make_pair(1, true),
+    std::make_pair(2, true),
+    std::make_pair(3, true)}
 {
   if(a % b != (int)std::pow(a, 2) % b)
     throw std::domain_error("a and a^2 must be equivalent mod b");
