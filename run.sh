@@ -97,7 +97,7 @@ acm::examples() {
   run::set-all show-output-on
 
   hr
-  run "bin/acm-main -H f 117645"
+  run "bin/acm-main -H -f 117645"
   hr
   run "bin/acm-main -H -d 441"
   hr
