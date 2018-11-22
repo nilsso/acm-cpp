@@ -24,7 +24,7 @@ export LibBashRepo="https://github.com/kigster/lib-bash"
 
 # We are using an awesome BASH library `lib-bash` for prettifying the output, and
 # running commands through their LibRun framework.
-divider::lib-bash() {
+acm::lib-bash() {
   [[ ! -d ${BashLibRoot} ]] && curl -fsSL https://git.io/fxZSi | /usr/bin/env bash
   [[ ! -d ${BashLibRoot} ]] && { 
     printf "Unable to git clone lib-bash repo from ${LibBashRepo}"
@@ -45,8 +45,8 @@ divider::lib-bash() {
   run::set-all show-output-off abort-on-error
 }
 
-divider::header() {
-  h1::purple "Fractional Division With Remainder: A CMake Project Template with Tests"
+acm::header() {
+  h1::purple "ACM test program"
   local OIFC=${IFC}
   IFS="|" read -r -a gcc_info <<< "$(gcc --version 2>&1 | tr '\n' '|')"
   export IFC=${OIFC}
@@ -55,19 +55,19 @@ divider::header() {
   h1 "${bldylw}CMAKE:  ${bldblu}$(cmake --version | tr '\n' ' ')"
 }
 
-divider::setup() {
+acm::setup() {
   hl::subtle "Creating Build Folder..."
   run "mkdir -p build/run"
 
   [[ -f .idea/workspace.xml ]] || cp .idea/workspace.xml.example .idea/workspace.xml
 }
 
-divider::clean() {
+acm::clean() {
   hl::subtle "Cleaning output folders..."
   run 'rm -rf bin/d* include/d* lib/*'
 }
 
-divider::build() {
+acm::build() {
   run "cd build/run"
   run "cmake ../.. "
   run "make -j 12"
@@ -75,18 +75,21 @@ divider::build() {
   run "cd ${ProjectRoot}"
 }
 
-divider::tests() {
-  if [[ -f bin/divider_tests ]]; then
-    run::set-next show-output-on
-    run "echo && bin/divider_tests"
-  else
-    printf "${bldred}Can't find installed executable ${bldylw}bin/divider_tests.${clr}\n"
-    exit 2
-  fi
+acm::tests() {
+  declare -a tests=("divisor_tests" "factor_tests" "acm_tests")
+  for t in ${tests[@]}; do
+    if [[ -f bin/${t} ]]; then
+      run::set-next show-output-on
+      run "echo && bin/${t}"
+    else
+      printf "${bldred}Can't find installed executable ${bldylw}bin/${t}.${clr}\n"
+      exit 2
+    fi
+  done
 }
 
-divider::examples() {
-  [[ ! -f bin/divider ]] && {
+acm::examples() {
+  [[ ! -f bin/acm-main ]] && {
     error "You don't have the cmpiled binary yet".
     exit 3
   }
@@ -94,22 +97,22 @@ divider::examples() {
   run::set-all show-output-on
 
   hr
-  run "bin/divider 11 7"
+  run "bin/acm-main -H f 117645"
   hr
-  run "bin/divider 1298798375 94759897"
+  run "bin/acm-main -H -d 441"
   hr
-  run "bin/divider 78 17"
+  run "bin/acm-main -H -n 100"
   hr
 
 }
 
 main() {
-  divider::lib-bash
-  divider::header
-  divider::setup
-  divider::build
-  divider::tests
-  divider::examples
+  acm::lib-bash
+  acm::header
+  acm::setup
+  acm::build
+  acm::tests
+  acm::examples
 }
 
 (( $_s_ )) || main
