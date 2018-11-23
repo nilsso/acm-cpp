@@ -105,7 +105,7 @@ private:
 
   //! ACMFactor
   const set<vector<int>>& ACMFactor(int n);
-  const set<vector<int>>& __ACMFactor(int n, const set<int> &dss);
+  const set<vector<int>>& __ACMFactor(int n);
 };
 
 //! Stream insertion overload

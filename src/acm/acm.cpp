@@ -76,12 +76,11 @@ bool ArithmeticalCongruenceMonoid::irreducible(int n)
 const set<vector<int>>&
 ArithmeticalCongruenceMonoid::ACMFactor(int n)
 {
-  auto ds = divisors(n);
-  return __ACMFactor(n, ds);
+  return __ACMFactor(n);
 }
 
 const set<vector<int>>&
-ArithmeticalCongruenceMonoid::__ACMFactor(int n, const set<int> &dss)
+ArithmeticalCongruenceMonoid::__ACMFactor(int n)
 {
   // If value cached
   if (m_factorizations.count(n))
@@ -96,19 +95,14 @@ ArithmeticalCongruenceMonoid::__ACMFactor(int n, const set<int> &dss)
     return fs;
 
   auto ds = divisors(n);
-  auto di = next(ds.begin());
-  auto de = ds.end();
-  for (; di != de; ++di) {
+  for (auto di = next(ds.begin()); di != ds.end(); ++di) {
     int d = *di;
     int dd = n/d;
     if (ds.count(dd) && (
           (dd==1 && fs.size()==0) ||
-          (__ACMFactor(d, ds).begin())->size()==1)) {
-      set<vector<int>> ddfs;
-      for (auto df: __ACMFactor(dd, ds)) {
-        ddfs.emplace(df);
-      }
-      for (vector<int> ddf: ddfs) {
+          (__ACMFactor(d).begin())->size()==1)) {
+      set<vector<int>> ddfs{__ACMFactor(dd)};
+      for (auto ddf: ddfs) {
         if (ddf.size()==0 || d >= *prev(ddf.end())) {
           ddf.push_back(d);
           fs.insert(ddf);
