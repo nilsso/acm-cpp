@@ -29,6 +29,7 @@ namespace is_stl_container_impl
   template <typename T> struct is_stl_container:std::false_type{};
   template <typename T, std::size_t N> struct is_stl_container<std::array<T,N>>    :std::true_type{};
   template <typename... Args> struct is_stl_container<std::vector<Args...>>:std::true_type{};
+  template <typename... Args> struct is_stl_container<std::set<Args...>>:std::true_type{};
 }
 
 template <typename T> struct is_container {
@@ -36,9 +37,10 @@ template <typename T> struct is_container {
 };
 
 template
-<template<typename ...> class Tc, typename T>
+< template<typename ...> class Tc,
+  typename T >
 inline string join(
-    const Tc<T> &c,
+    const Tc<T> c,
     const string &delim,
     const string &lcap="(",
     const string &rcap=")")
@@ -48,7 +50,7 @@ inline string join(
   if (c.size() > 0) {
     auto end = prev(c.end());
     for (auto i = c.begin(); i != end; ++i) {
-      ss << (*i) << delim;
+      ss << *i << delim;
     }
     ss << *prev(c.end());
   }
@@ -57,19 +59,40 @@ inline string join(
 };
 
 template
-  <template<typename ...> class Tc, template<typename ...> class Dc, typename T>
+< template<typename ...> class Dc,
+  template<typename ...> class Tc,
+  typename T >
 inline string join(
     const Dc<Tc<T>> &c,
     const string &delim,
+    string lcap = "(",
+    string rcap = ")",
     typename std::enable_if<is_container<Tc<T>>::value>::type* = 0,
     typename std::enable_if<is_container<Dc<T>>::value>::type* = 0)
 {
   vector<string> s;
-  std::for_each(c.begin(), c.end(),
-      [&delim,&s](const Tc<T> &i){ s.push_back(join(i, delim)); });
-  return join(s, delim);
+  for (auto i: c)
+    s.push_back(join(i, delim, lcap, rcap));
+  return join(s, delim, lcap, rcap);
 };
 
+template
+< template<typename ...> class Tc,
+  template<typename ...> class Dc,
+  typename T >
+inline string join(
+    const Dc<Tc<T>*> &c,
+    const string &delim,
+    string lcap = "(",
+    string rcap = ")",
+    typename std::enable_if<is_container<Tc<T>>::value>::type* = 0,
+    typename std::enable_if<is_container<Dc<T>>::value>::type* = 0)
+{
+  vector<string> s;
+  for (auto i: c)
+    s.push_back(join(*i, delim, lcap, rcap));
+  return join(s, delim, lcap, rcap);
+};
 
 /// Temporary QOL printing functions
 
@@ -101,7 +124,12 @@ inline ostream& operator<<(ostream& os, set<vector<int>> obj)
   return os << join(obj, ",");
 }
 
-inline ostream& operator<<(ostream& os, vector<pair<int,int>> obj)
+inline ostream& operator<<(ostream& os, set<vector<int>*> obj)
 {
   return os << join(obj, ",");
 }
+
+//inline ostream& operator<<(ostream& os, vector<pair<int,int>> obj)
+//{
+  //return os << join(obj, ",");
+//}

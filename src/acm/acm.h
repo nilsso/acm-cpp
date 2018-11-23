@@ -77,7 +77,7 @@ public:
    * - 45 is factorable to 5*9.
    * - 441 is factorable to 21*21 and 9*49
    */
-  const set<vector<int>>& factorizations(int n);
+  const set<vector<int>*>& factorizations(int n);
 
   //! Is n irreducible
   bool irreducible(int n);
@@ -88,19 +88,24 @@ public:
   //! Irreducibles up to limit
   vector<int> irreducibles_up_to(int s, int lim);
 
+  //!
+  string atomic_density_list(int n);
+  string atomic_density_list(int n, int s);
+
   //! User defined ACM to string
   explicit operator std::string() const
   { return "M("+to_string(m_a)+","+to_string(m_b)+")"; }
 
 private:
   int m_a, m_b;
-  map<int,set<vector<int>>> m_factorizations;
+  map<int,set<vector<int>*>> m_factorizations;
   map<int,bool> m_irreducible;
 
   ArithmeticalCongruenceMonoid() = delete;
 
   //! ACMFactor
-  const set<vector<int>>& ACMFactor(int n);
+  const set<vector<int>*>& ACMFactor(int n);
+  set<vector<int>*>& __ACMFactor(int n, const set<int> &dss);
 };
 
 //! Stream insertion overload
