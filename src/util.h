@@ -76,24 +76,6 @@ inline string join(
   return join(s, delim, lcap, rcap);
 };
 
-template
-< template<typename ...> class Tc,
-  template<typename ...> class Dc,
-  typename T >
-inline string join(
-    const Dc<Tc<T>*> &c,
-    const string &delim,
-    string lcap = "(",
-    string rcap = ")",
-    typename std::enable_if<is_container<Tc<T>>::value>::type* = 0,
-    typename std::enable_if<is_container<Dc<T>>::value>::type* = 0)
-{
-  vector<string> s;
-  for (auto i: c)
-    s.push_back(join(*i, delim, lcap, rcap));
-  return join(s, delim, lcap, rcap);
-};
-
 /// Temporary QOL printing functions
 
 template<typename T>
@@ -123,13 +105,3 @@ inline ostream& operator<<(ostream& os, set<vector<int>> obj)
 {
   return os << join(obj, ",");
 }
-
-inline ostream& operator<<(ostream& os, set<vector<int>*> obj)
-{
-  return os << join(obj, ",");
-}
-
-//inline ostream& operator<<(ostream& os, vector<pair<int,int>> obj)
-//{
-  //return os << join(obj, ",");
-//}

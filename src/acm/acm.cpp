@@ -5,7 +5,7 @@
 // -----------------------------------------------------------------------------
 
 ArithmeticalCongruenceMonoid::ArithmeticalCongruenceMonoid(int a, int b):
-  m_factorizations{std::make_pair(1, set<vector<int>*>{new vector<int>{}})},
+  m_factorizations{std::make_pair(1, set<vector<int>>{{}})},
   m_irreducible{
     std::make_pair(1, true),
     std::make_pair(2, true),
@@ -49,7 +49,7 @@ ArithmeticalCongruenceMonoid::divisors(int n)
   return ds;
 }
 
-const set<vector<int>*>&
+const set<vector<int>>&
 ArithmeticalCongruenceMonoid::factorizations(int n)
 {
   if (m_factorizations.count(n))
@@ -64,7 +64,7 @@ bool ArithmeticalCongruenceMonoid::irreducible(int n)
     return m_irreducible.at(n);
 
   const auto& fs = ACMFactor(n);
-  bool irreducible = fs.size()==0 || (*fs.begin())->size()==1;
+  bool irreducible = fs.size()==0 || (*fs.begin()).size()==1;
   m_irreducible.insert(std::make_pair(n, irreducible));
   return irreducible;
 }
@@ -73,14 +73,14 @@ bool ArithmeticalCongruenceMonoid::irreducible(int n)
 // ArithmeticalCongruenceMonoid: Private instance functions
 // -----------------------------------------------------------------------------
 
-const set<vector<int>*>&
+const set<vector<int>>&
 ArithmeticalCongruenceMonoid::ACMFactor(int n)
 {
   auto ds = divisors(n);
   return __ACMFactor(n, ds);
 }
 
-set<vector<int>*>&
+const set<vector<int>>&
 ArithmeticalCongruenceMonoid::__ACMFactor(int n, const set<int> &dss)
 {
   // If value cached
@@ -88,7 +88,7 @@ ArithmeticalCongruenceMonoid::__ACMFactor(int n, const set<int> &dss)
     return m_factorizations.at(n);
 
   // Initialize empty list of n factorizations and get reference
-  m_factorizations.insert(std::make_pair(n, set<vector<int>*>{}));
+  m_factorizations.insert(std::make_pair(n, set<vector<int>>{}));
   auto &fs = m_factorizations.at(n);
 
   // If n not ACM element
@@ -96,24 +96,21 @@ ArithmeticalCongruenceMonoid::__ACMFactor(int n, const set<int> &dss)
     return fs;
 
   auto ds = divisors(n);
-  cout << "n=" << n << " ds=" << ds << '\n';
   auto di = next(ds.begin());
   auto de = ds.end();
   for (; di != de; ++di) {
     int d = *di;
     int dd = n/d;
-    cout << "n=" << n << " d=" << d << " dd=" << dd << '\n';
-    if (ds.count(dd) && ((dd==1 && fs.size()==0) || (*__ACMFactor(d, ds).begin())->size()==1)) {
-      set<vector<int>*> ddfs;
+    if (ds.count(dd) && (
+          (dd==1 && fs.size()==0) ||
+          (__ACMFactor(d, ds).begin())->size()==1)) {
+      set<vector<int>> ddfs;
       for (auto df: __ACMFactor(dd, ds)) {
-        ddfs.insert(new vector<int>{*df});
+        ddfs.emplace(df);
       }
-      cout << "dd=" << dd << " ddfs=" << ddfs << '\n';
-      for (vector<int> *ddf: ddfs) {
-        cout << ddf->size() << '\n';
-        if (ddf->size()==0 || d >= *prev(ddf->end())) {
-          cout << "d=" << d << '\n';
-          ddf->push_back(d);
+      for (vector<int> ddf: ddfs) {
+        if (ddf.size()==0 || d >= *prev(ddf.end())) {
+          ddf.push_back(d);
           fs.insert(ddf);
         }
       }

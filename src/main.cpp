@@ -33,83 +33,76 @@ using ACM = ArithmeticalCongruenceMonoid;
 // -----------------------------------------------------------------------------
 int main(int argc, char **argv)
 {
-  ACM acm{3,6};
-  cout << acm.factorizations(999) << '\n';
+  int a, b, n, s;
+  char o;
 
-/*
- *  int a, b, n, s;
- *  char o;
- *
- *  for (char c; (c = getopt(argc, argv, "hHa:b:Adfinl")) != -1;) {
- *    switch (c) {
- *      case 'h':
- *        std::cout << "Help!\n";
- *        return 0;
- *
- *      case 'H':
- *        a = 1;
- *        b = 4;
- *        break;
- *
- *      case 'a':
- *        a = std::stoi(optarg);
- *        break;
- *
- *      case 'b':
- *        b = std::stoi(optarg);
- *        break;
- *
- *      case 'A':
- *      case 'd':
- *      case 'f':
- *      case 'i':
- *      case 'n':
- *      case 'l':
- *        o = c;
- *        break;
- *
- *      default:
- *        std::cout
- *          << "Error!\n";
- *        return 1;
- *    }
- *  }
- *
- *  n = std::stoi(argv[optind]);
- *
- *  if (!((bool)a && (bool)b)) {
- *    std::cout
- *      << "Error!\n";
- *    return 1;
- *  }
- *
- *  ACM acm{a, b};
- *
- *  cout << "acm=" << acm << " n=" << n << '\n';
- *
- *  switch (o) {
- *    case 'A':
- *      cout
- *        << acm.divisors(n) << '\n'
- *        //<< acm.factorizations(n) << '\n'
- *        << acm.irreducible(n) << '\n'
- *        << acm.irreducibles_up_to(n) << '\n';
- *      break;
- *    case 'd':
- *      cout << acm.divisors(n) << '\n';
- *      break;
- *    case 'f':
- *      cout << acm.factorizations(n) << '\n';
- *      break;
- *    case 'i':
- *      cout << acm.irreducible(n) << '\n';
- *      break;
- *    case 'n':
- *      cout << acm.irreducibles_up_to(n) << '\n';
- *      break;
- *    case 'l':
- *      cout << acm.atomic_density_list(n) << '\n';
- *  }
- */
+  for (char c; (c = getopt(argc, argv, "hHa:b:Adfinl")) != -1;) {
+    switch (c) {
+      case 'h':
+        std::cout << "Help!\n";
+        return 0;
+
+      case 'H':
+        a = 1;
+        b = 4;
+        break;
+
+      case 'a':
+        a = std::stoi(optarg);
+        break;
+
+      case 'b':
+        b = std::stoi(optarg);
+        break;
+
+      case 'A':
+      case 'd':
+      case 'f':
+      case 'i':
+      case 'n':
+      case 'l':
+        o = c;
+        break;
+
+      default:
+        std::cout
+          << "Error!\n";
+        return 1;
+    }
+  }
+
+  n = std::stoi(argv[optind]);
+
+  if (!((bool)a && (bool)b)) {
+    std::cout
+      << "Error!\n";
+    return 1;
+  }
+
+  ACM acm{a, b};
+
+  switch (o) {
+    case 'A':
+      cout
+        << acm.divisors(n) << '\n'
+        << acm.factorizations(n) << '\n'
+        << acm.irreducible(n) << '\n'
+        << acm.irreducibles_up_to(n) << '\n';
+      break;
+    case 'd':
+      cout << acm.divisors(n) << '\n';
+      break;
+    case 'f':
+      cout << acm.factorizations(n) << '\n';
+      break;
+    case 'i':
+      cout << acm.irreducible(n) << '\n';
+      break;
+    case 'n':
+      cout << acm.irreducibles_up_to(n) << '\n';
+      break;
+    case 'l':
+      cout << acm.atomic_density_list(n) << '\n';
+  }
   return 0;
 }
