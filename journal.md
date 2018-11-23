@@ -53,3 +53,14 @@ implementing `irreducible` and `irreducibles_up_to` as well. Changed the test
 program to accept a optional operation argument and output the ACM result of the
 operation.
 
+#### 11/22/2018
+
+Realized that the "fixed" `factorizations` actually didn't work for a lot of
+other ACM's, e.g. M(3,6). Basically went and verbatim translated the function
+from `acm-sage`. Still some things I'm not certain about, like why 1 needs to be
+the only element with the factorization `{{}}` at least, as opposed to any other
+unfactorable having `{}`. I realize it comes down to the condition used in
+`__ACMFactor`, but I can't help but think there's a way to avoid that. Also
+there's a lot of deep-copying that happens that I'm not certain is necessary,
+but oh well.
+
