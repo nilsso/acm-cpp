@@ -1,13 +1,10 @@
 #pragma once
 
 #include <set>
-#include <iostream>
-
 #include "pfactor.h"
 #include "util.h"
 
 using std::set;
-using std::cout;
 
 inline set<int> divisors(int n)
 {
