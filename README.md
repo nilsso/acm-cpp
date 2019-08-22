@@ -1,5 +1,10 @@
 # Arithmetical Congruence Monoid C++
 
+**Note that I've restarted [this project in Rust][rust-acm]
+(because I felt like it.)**
+
+[rust-acm]: https://github.com/nilsso/acm-rust
+
 This project serves as a C++ implementation and extension of the
 [acm-sage][acm-sage] project and was started as an undergraduate research
 project.
@@ -20,20 +25,29 @@ Install these via your favorite package manager.
 
 ## Installation
 
-First clone and move into the project:
+First clone and move into the project
+(using `--recurse-submodules` to also clone [googletests]
+into `test/lib/googletest`):
+
+[googletests]: https://github.com/google/googletest
 
 ```bash
-git clone https://github.com/nilsso/acm-cpp
+git clone --recurse-submodules https://github.com/nilsso/acm-cpp
 cd acm-cpp
 ```
 
 Then either:
 
-- Run the helper script `./run.sh` (which makes and compiles the project in
-`build/run`, installs the binaries to `bin`, runs the unit tests programs,
-then runs a few examples of the `acm-main` test program)
+- Build manually with:
+    ```base
+    mkdir build
+    cd build
+    cmake ..
+    make install
+    ```
+- Run the helper script `./run.sh` which build and installs all, like above,
+and then also runs all tests.
 
-- Or `mkdir build && cd build && cmake .. && make` to build manually
 
 ## Usage
 
